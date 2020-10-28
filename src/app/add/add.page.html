@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button href="home1">Home</ion-button>
+    <ion-title>add</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label position="stacked">ชื่อ<ion-text color="danger">*</ion-text></ion-label>
+    <ion-input required type="text" oninput="handleFirstNameValue(event)"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>ประเภท</ion-label>
+    <ion-select placeholder="">
+      <ion-select-option value="f">ร้านอาหาร</ion-select-option>
+      <ion-select-option value="s">ร้านซ่อมรถ</ion-select-option>
+      <ion-select-option value="a">ตู้ ATM</ion-select-option>
+      <ion-select-option value="l">ร้านขายของชำ</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label position="stacked">ที่อยู่<ion-text color="danger">*</ion-text></ion-label>
+    <ion-input required type="text" oninput="handleFirstNameValue(event)"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="stacked">เวลาเปิด-ปิด<ion-text color="danger">*</ion-text></ion-label>
+    <ion-input required type="text" oninput="handleFirstNameValue(event)"></ion-input>
+  </ion-item>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+            <ion-router-link href = "home1"   class="ion-no-margin" >Save</ion-router-link>
+      </ion-col>
+    </ion-row>
+    </ion-grid>
+</ion-content>

@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button manu = "main-menu"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      ร้านซ่อมรถ
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+ 
+<ion-content>
+<!--กล่อง search-->
+<ion-searchbar (ionChange)="onSearch($event)" placeholder="ค้นหา">
+</ion-searchbar>
+<!--รายการเบอร์โทร-->
+<ion-list>
+  <div *ngIf="item.length>0;else noItem">
+ <ion-item *ngFor="let item of item"  href="tel:{{item.tel}}">
+   <ion-avatar slot="start">
+     <img src="{{item.img}}">
+   </ion-avatar>
+   <ion-label>
+     <h2>{{item.name}}</h2>
+   </ion-label>
+ </ion-item>
+</div>
+<ng-template #noItem>
+  <ion-item>
+    ไม่พบข้อมูล
+  </ion-item>
+</ng-template>
+</ion-list>
+</ion-content>
