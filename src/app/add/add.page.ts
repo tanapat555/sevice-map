@@ -35,7 +35,7 @@ export class AddPage implements OnInit {
      type: this.type,
      address: this.address,
      opentime: this.opentime,
-     log: this.lng,
+     lng: this.lng,
      lat: this.lat
     })
   }

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
-
+import { AngularFirestore  } from '@angular/fire/firestore';
 declare var google: any;
 
 @Component({
@@ -12,54 +12,65 @@ declare var google: any;
 export class Home1Page {
 
   map: any;
+  latLng;
 
   @ViewChild('map', {read: ElementRef, static: false}) mapRef: ElementRef;
 
   infoWindows: any = [];
+  
 
   //ดึงจาก firebase
-  markers: any = [
-    {
-     
-  },
-    
-  ];
+  markers: any = [];
 
-  constructor(private router:Router ) {
+  constructor(private router:Router, private db: AngularFirestore ) {
 
-    }
+
+    return;
+}  
+
     
 
   ionViewDidEnter() {
-    this.showMap();
+    this.getMarkers()
+    //this.showMap();
   }
+  
+  async getMarkers(){
+    this.db.collection("MyApp").snapshotChanges().subscribe(res => 
+      res.forEach(x => { 
+            console.log("Data ", x.payload.doc.data())
+            this.markers.push(x.payload.doc.data());
+            this.showMap();
+      }
+      )
+      );
+  }
+
 
   addMarkersToMap(markers) {
     for (let marker of markers) {
-      let position = new google.maps.LatLng(marker.latitude, marker.longitude);
       let mapMarker = new google.maps.Marker({
-        position: position,
+        position: new google.maps.LatLng(marker.lat, marker.lng),
+        map: this.map,
         title: marker.title,
-        addres:marker.address,
+        address:marker.address,
         opentime:marker.opentime,
-        latitude: marker.latitude,
-        longitude: marker.longitude,
         type :marker.type
       });
-
-      mapMarker.setMap(this.map);
       this.addInfoWindowToMarker(mapMarker);
     }
+    
   }
 
   addInfoWindowToMarker(marker) {
+    console.log(marker)
     let infoWindowContent = '<div id="content">' +
                               '<h2 id="firstHeading" class"firstHeading">' + marker.title + '</h2>' +
                               '<p>Address: ' + marker.address + '</p>' +
                               '<p>Opentime: ' + marker.opentime + '</p>' +
                               '<img src="' + marker.image +'" ></p>'+
-                              '<p>Latitude: ' + marker.latitude + '</p>' +
-                              '<p>Longitude: ' + marker.longitude + '</p>' +
+                              '<p>Latitude: ' + marker.lat + '</p>' +
+                              '<p>Longitude: ' + marker.lng + '</p>' +
                               '<p>Type: ' + marker.type + '</p>' +
                               '<ion-button href="detail">detail</ion-button>' +
                             '</div>';
@@ -90,6 +101,8 @@ export class Home1Page {
   }
 
   showMap() {
+
+    console.log("Markers ", this.markers)
     const location = new google.maps.LatLng(16.140838, 103.880857);
     const options = {
       center: location,
@@ -98,10 +111,10 @@ export class Home1Page {
     }
     this.map = new google.maps.Map(this.mapRef.nativeElement, options);
     this.addMarkersToMap(this.markers);
-
     this.map.addListener("click", (event) => {
       console.log("lat ", event.latLng.lat())
       console.log("long ", event.latLng.lng())
+     
       this.router.navigate(['/add', {
         lat: event.latLng.lat(),
         lng: event.latLng.lng()
@@ -110,16 +123,7 @@ export class Home1Page {
     
     // สร้างฟอร์มเพื่อดึงข้อมูลชื่อร้าน ประเภท รูปภาพ แล้วเมื่อกด Submit จะเรียกใช้ฟังก์ชัน addMarker(newmarker)
 
-    let newmarker = new google.maps.Marker({
-        map: this.map,
-        animation: google.maps.Animation.DROP,
-        position: event.latLng,
-        latitude:event.latLng.lat(),
-        longtitude:event.latLng.lng(),
-        title: "ดึงจากผู้ใช้",
-        type:"ดึงจากผู้ใช้",
-        image:""
-      });
+  
     
     });
 
