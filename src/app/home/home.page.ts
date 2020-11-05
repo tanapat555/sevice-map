@@ -16,12 +16,7 @@ export class HomePage {
 
   infoWindows: any = [];
   markers: any = [
-    {
-        title: "จุ่มโจร สาขา ราชภัฏร้อยเอ็ด",
-        latitude: "16.134966",
-        longitude: "103.882808", 
-        type : "ร้านอาหาร"
-    },
+   
   ];
 
   constructor( ) {

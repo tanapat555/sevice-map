@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ViewChild, ElementRef } from '@angular/core';
+import { Router } from '@angular/router';
 
 declare var google: any;
 
@@ -19,23 +20,12 @@ export class Home1Page {
   //ดึงจาก firebase
   markers: any = [
     {
-        title: "จุ่มโจร สาขา ราชภัฏร้อยเอ็ด",
-        latitude: "16.134966",
-        longitude: "103.882808",
-        type : "ร้านอาหาร",
-        image : ""
-    },
-    {
-      title: "Coffee Stories",
-      latitude: "16.149165",
-      longitude: "103.867329",
-      type : "ร้านกาแฟ",
-      image : ""
+     
   },
-
+    
   ];
 
-  constructor( ) {
+  constructor(private router:Router ) {
 
     }
     
@@ -50,6 +40,8 @@ export class Home1Page {
       let mapMarker = new google.maps.Marker({
         position: position,
         title: marker.title,
+        addres:marker.address,
+        opentime:marker.opentime,
         latitude: marker.latitude,
         longitude: marker.longitude,
         type :marker.type
@@ -63,6 +55,8 @@ export class Home1Page {
   addInfoWindowToMarker(marker) {
     let infoWindowContent = '<div id="content">' +
                               '<h2 id="firstHeading" class"firstHeading">' + marker.title + '</h2>' +
+                              '<p>Address: ' + marker.address + '</p>' +
+                              '<p>Opentime: ' + marker.opentime + '</p>' +
                               '<img src="' + marker.image +'" ></p>'+
                               '<p>Latitude: ' + marker.latitude + '</p>' +
                               '<p>Longitude: ' + marker.longitude + '</p>' +
@@ -108,6 +102,11 @@ export class Home1Page {
     this.map.addListener("click", (event) => {
       console.log("lat ", event.latLng.lat())
       console.log("long ", event.latLng.lng())
+      this.router.navigate(['/add', {
+        lat: event.latLng.lat(),
+        lng: event.latLng.lng()
+      }])
+    
     
     // สร้างฟอร์มเพื่อดึงข้อมูลชื่อร้าน ประเภท รูปภาพ แล้วเมื่อกด Submit จะเรียกใช้ฟังก์ชัน addMarker(newmarker)
 
